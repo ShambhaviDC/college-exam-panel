@@ -29,7 +29,8 @@ Table Name: panels
 2. Start Apache and MySQL
 3. Place project folder inside htdocs
 4. Open in browser:
-   http://localhost/your-folder-name
+   http://localhost/college_exam_panel
+   
 
 ## 👩‍💻 Developed By
 Shambhavi
