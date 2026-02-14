@@ -18,6 +18,30 @@ th{background:#1e3c72;color:white;}
 th,td{padding:10px;border:1px solid #ddd;text-align:center;}
 tr:nth-child(even){background:#f2f2f2;}
 .hidden{display:none;}
+.branch-buttons{
+display:flex;
+justify-content:center;
+gap:20px;
+margin-bottom:25px;
+}
+
+.branch-buttons button{
+width:200px;
+padding:12px;
+background:#1e3c72;
+color:white;
+border:none;
+border-radius:8px;
+cursor:pointer;
+font-size:16px;
+transition:0.3s;
+}
+
+.branch-buttons button:hover{
+background:#16325c;
+transform:scale(1.05);
+}
+
 </style>
 </head>
 <body>
@@ -149,8 +173,34 @@ Internal 2:
 </div>
 
 <!-- ADMIN PANEL -->
+<!-- ADMIN PANEL -->
 <div class="container hidden" id="adminDiv">
-<h2>Admin Portal</h2>
+
+<h2>Admin Dashboard</h2>
+
+<!-- Branch Buttons -->
+<div class="branch-buttons">
+<button onclick="showBranchDashboard('CSE')">CSE</button>
+<button onclick="showBranchDashboard('AIML')">CSE(AIML)</button>
+<button onclick="showBranchDashboard('AIDS')">CSE(AIDS)</button>
+</div>
+
+
+<!-- Semester Status Table -->
+<table>
+<thead>
+<tr>
+<th>Semester</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody id="dashboardTable"></tbody>
+</table>
+
+<br><br>
+
+<h3>Detailed Panel Records</h3>
+
 <table>
 <thead>
 <tr>
@@ -168,7 +218,10 @@ Internal 2:
 
 <button onclick="downloadData()">Download Panel List</button>
 <button onclick="logout()">Logout</button>
+
 </div>
+
+
 
 <script>
 
@@ -309,6 +362,41 @@ window.location="download.php";
 
 function logout(){
 location.reload();
+}
+
+function showBranchDashboard(branch){
+
+fetch("fetch.php")
+.then(res => res.json())
+.then(data => {
+
+let dashboard = document.getElementById("dashboardTable");
+dashboard.innerHTML = "";
+
+for(let sem=1; sem<=8; sem++){
+
+let found = data.find(p => p.dept === branch && p.sem == sem);
+
+let row = document.createElement("tr");
+
+let statusCell = "";
+
+if(found){
+statusCell = "<span style='color:green;font-weight:bold;'>Completed</span>";
+}
+else{
+statusCell = "<span style='color:red;font-weight:bold;'>Pending</span>";
+}
+
+row.innerHTML = `
+<td>${sem}</td>
+<td>${statusCell}</td>
+`;
+
+dashboard.appendChild(row);
+}
+
+});
 }
 
 </script>
